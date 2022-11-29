@@ -433,5 +433,5 @@
 (defun leglode()
 (interactive)
 (save-excursion
-(insert "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")))
+(insert "")))
 #+end_src
