@@ -1,0 +1,156 @@
+* Interface 
+* Themes
+#+BEGIN_SRC emacs-lisp
+(add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
+#+END_SRC
+#+BEGIN_SRC emacs-lisp
+    (use-package zenburn-theme
+    :ensure t
+    :disabled t
+    :config (load-theme 'zenburn t))
+#+END_SRC
+#+begin_src emacs-lisp
+;;(load-theme 'bcd t)
+#+end_src
+#+begin_src emacs-lisp
+;;(load-theme 'efg t)
+#+end_src
+#+begin_src emacs-lisp
+(load-theme 'fgh t)
+#+end_src
+* Réglages org-mode
+
+#+BEGIN_SRC emacs-lisp
+(require 'org)
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+    ;;Utilisations des 3 petits points en lieu et place des ... d'origine
+    (setq org-ellipsis " …")
+    ;;Boulets dans org
+    ;Toujours ouvrir un ficher avec les 
+    (setq org-startup-folded t)
+    (use-package org-bullets
+      :ensure t
+      :config
+      (add-hook 'org-mode-hook (lambda()(org-bullets-mode 1))))
+    (setq org-startup-folded t)
+#+END_SRC
+
+#+begin_src emacs-lisp
+(setq org-src-tab-acts-natively t)
+#+end_src
+
+* Typographie
+** Signes doubles
+#+begin_src emacs-lisp
+(defun cca-exclamation()
+  (interactive)
+  (save-excursion
+    (insert " !")))
+
+(defun cca-interrogation()
+  (interactive)
+  (save-excursion
+    (insert " ?")))
+
+(defun cca-deuxpoints()
+  (interactive)
+  (save-excursion
+    (insert " :")))
+
+(defun cca-pointvirgule()
+  (interactive)
+  (save-excursion
+    (insert " ;")))
+
+#+end_src
+** Espaces
+#+begin_src emacs-lisp
+(defun cca-insecable()
+  (interactive)
+  (save-excursion)
+(ucs-insert '#xa0))
+
+(defun cca-fine-secable()
+  (interactive)
+  (save-excursion)
+(ucs-insert '#x2009))
+
+(defun cca-fine-insecable()
+  (interactive)
+  (save-excursion)
+(ucs-insert '#x202f))
+
+(defun cca-tiret-cadratin()
+  (interactive)
+  (save-excursion)
+(ucs-insert '#x2014))
+
+(defun cca-tiret-demi-cadratin()
+  (interactive)
+  (save-excursion)
+(ucs-insert '#x2013))
+#+end_src
+** Autres
+#+begin_src emacs-lisp
+
+(defun cca-ae()
+  (interactive)
+  (save-excursion)
+  (ucs-insert '#x00e6))
+ 
+(defun cca-oe()
+  (interactive)
+  (save-excursion)
+  (ucs-insert '#x0153))
+
+(defun cca-left()
+  (interactive)
+  (save-excursion)
+(ucs-insert '#x201c))
+
+(defun cca-right()
+  (interactive)
+  (save-excursion)
+(ucs-insert '#x201d))
+
+(defun cca-left-single()
+  (interactive)
+  (save-excursion)
+(ucs-insert '#x2018))
+
+(defun cca-right-single()
+  (interactive)
+  (save-excursion)
+(ucs-insert '#x2019))
+
+(defun cca-ampersand()
+  (interactive)
+  (save-excursion)
+(ucs-insert '#x026))
+
+(defun cca-apostrophe()
+  (interactive)
+  (save-excursion)
+(ucs-insert '#x2019))
+
+(defun cca-suspension()
+  (interactive)
+  (save-excursion)
+(ucs-insert '#x2026))
+#+end_src
+
+#+begin_src emacs-lisp
+;supprime les lignes blanches multiples et ne laisse que des singletons de lignes blanches
+(defun single-lines-only ()
+  "replace multiple blank lines with a single one"
+  (interactive)
+  (goto-char (point-min))
+  (while (re-search-forward "\\(^\\s-*$\\)\n" nil t)
+    (replace-match "\n")
+    (forward-char 1)))
+
+#+end_src
+* Typographie : raccourcis
+* Raccourcis globaux

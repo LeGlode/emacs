@@ -1,0 +1,104 @@
+* Interface
+#+BEGIN_SRC emacs-lisp
+(setq inhibit-default-init t); pas d'initialisation
+(setq inhibit-startup-message t) ; no splash screen
+(display-time)
+(setq display-time-24hr-format t)
+(fset 'yes-or-no-p 'y-or-n-p)
+(setq visible-bell t)
+
+(line-number-mode t)
+(column-number-mode t)
+(column-number-mode -1)
+(global-set-key "\M-w" 'kill-ring-save)
+(global-set-key "\M-s" 'replace-string)
+
+(transient-mark-mode 1)
+(tool-bar-mode -1)
+(put 'upcase-region 'disabled nil)
+(put 'downcase-region 'disabled nil)
+(setq frame-title-format '("" (buffer-file-name "%f" (dired-directory dired-directory "%b"))))
+(scroll-bar-mode -1)
+
+; réglages plus fins de la souris
+(setq mouse-wheel-scroll-amount '(1 ((shift) . 1)))
+(setq mouse-wheel-progressive-speed nil)
+#+END_SRC
+* Thèmes
+#+BEGIN_SRC emacs-lisp
+  ;; (use-package dracula-theme
+  ;; :ensure t
+  ;; :config (load-theme 'dracula t))
+#+END_SRC
+#+BEGIN_SRC emacs-lisp
+  ;; (use-package zenburn-theme
+  ;; :ensure t
+  ;; :config (load-theme 'zenburn t))
+#+END_SRC
+
+#+begin_src emacs-lisp
+  ;; (defun cca-theme() 
+  ;; (interactive)
+  ;; (when (display-graphic-p)
+  ;; (color-theme-solarized))
+  ;; (set-background-color "black")
+  ;; (set-face-foreground "green")
+  ;; (use-package color-theme-solarized :config (cca-theme))
+#+end_src
+#+begin_src emacs-lisp
+   (add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
+   (load-theme 'fonce t)
+#+end_src
+#+begin_src emacs-lisp
+(use-package autothemer
+:ensure t)
+#+end_src
+#+begin_src 
+(require 'autothemer)
+(autothemer-deftheme 
+sombre "Thème sombre"
+((((class color) (min-color #xFFFFFF)))
+(sombre-noir "#000000")
+(sombre-blanc "#eef4d4")
+(sombre-vert "#1a871a")
+(sombre-violet "#8b31d6")
+(sombre-orange "#ff7a21"))
+
+((default (:foreground sombre-vert :background sombre-noir))
+   (cursor (:background sombre-orange))
+))
+(provide-theme 'sombre)
+#+end_src
+* Réglages org-mode
+#+BEGIN_SRC emacs-lisp
+(require 'org)
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+    ;;Utilisations des 3 petits points en lieu et place des ... d'origine
+    (setq org-ellipsis " …")
+    ;;Boulets dans org
+    ;Toujours ouvrir un ficher avec les 
+    (setq org-startup-folded t)
+    (use-package org-bullets
+      :ensure t
+      :config
+      (add-hook 'org-mode-hook (lambda()(org-bullets-mode 1))))
+    (setq org-startup-folded t)
+#+END_SRC
+#+BEGIN_SRC emacs-lisp
+(require 'org-tempo)
+#+END_SRC
+* Javascript
+#+BEGIN-SRC elisp
+(require 'js2-mode)
+(add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
+(setq js2-highlight-level 3)
+#+END_SRC  
+* Company
+#+begin_src emacs-lisp
+(use-package company
+:ensure t
+:init 
+(add-hook 'after-init-hook 'global-company-mode))
+#+end_src

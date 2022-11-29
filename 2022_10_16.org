@@ -1,0 +1,424 @@
+* Interface 
+#+BEGIN_SRC emacs-lisp
+      (setq inhibit-default-init t); pas d'initialisation
+      (setq inhibit-startup-message t) ; no splash screen
+      (display-time)
+      (setq display-time-24hr-format t)
+      (fset 'yes-or-no-p 'y-or-n-p)
+      (setq visible-bell t)
+
+      (line-number-mode t)
+      (column-number-mode t)
+      (column-number-mode -1)
+  (tool-bar-mode -1)
+      (global-set-key "\M-w" 'kill-ring-save)
+      (global-set-key "\M-s" 'replace-string)
+
+      (transient-mark-mode 1)
+      ;; (tool-bar-mode -1)
+      (put 'upcase-region 'disabled nil)
+      (put 'downcase-region 'disabled nil)
+      ;; (scroll-bar-mode 1)
+    ; réglages plus fins de la souris
+      (setq mouse-wheel-scroll-amount '(1 ((shift) . 1)))
+      (setq mouse-wheel-progressive-speed nil)
+
+      (setq scroll-conservatively 100)
+
+#+END_SRC
+** Recharge configuration
+#+begin_src emacs-lisp
+  (defun rechargeConfiguration()
+    (interactive)
+    (load-file "~/.emacs.d/vroom.el"))
+#+end_src
+#+begin_src emacs-lisp
+  (setq column-number-mode t)
+  (setq line-number-mode t)
+#+end_src
+#+begin_src emacs-lisp
+  ;;(show-paren-mode 1)
+  ;; (setq show-paren-style 'parenthesis)
+  ;; (require 'paren)
+  ;; (set-face-background 'show-paren-match-face "#5a7cc2")
+  ;; (set-face-foreground 'show-paren-match-face (face-foreground 'default))
+  ;;(set-face-attribute 'show-paren-match-face nil :weight 'extra-bold)
+#+end_src
+#+begin_src emacs-lisp
+  (setq backup-directory-alist
+	`((".*" . ,temporary-file-directory)))
+  (setq auto-save-file-name-transforms 
+	`((".*", temporary-file-directory t)))
+#+end_src
+** Windmove : mouvement fenêtre
+#+begin_src emacs-lisp
+  ;;changement de fenêtre au moyen de SHIFT + flêche
+  (when (fboundp 'windmove-default-keybindings)
+    (windmove-default-keybindings))
+#+end_src
+#+begin_src emacs-lisp
+  (when (eq system-type 'gnu/linux)
+  (add-to-list 'default-frame-alist
+  '(font . "Fira Code Retina 12")))
+#+end_src
+** Titre fenêtre
+#+begin_src emacs-lisp
+; Affiche la localisation du fichier en cours d'édition comme titre de la fenêtre.
+(setq frame-title-format '("" (buffer-file-name "%f" (dired-directory dired-directory "%b"))))
+
+#+end_src
+* Themes
+#+BEGIN_SRC emacs-lisp
+(add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
+#+END_SRC
+#+BEGIN_SRC emacs-lisp
+    (use-package zenburn-theme
+    :ensure t
+    :disabled t
+    :config (load-theme 'zenburn t))
+#+END_SRC
+#+begin_src emacs-lisp
+(load-theme 'fgh t)
+#+end_src
+
+* Réglages org-mode
+
+#+BEGIN_SRC emacs-lisp
+(require 'org)
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+    ;;Utilisations des 3 petits points en lieu et place des ... d'origine
+    (setq org-ellipsis " …")
+    ;;Boulets dans org
+    ;Toujours ouvrir un ficher avec les 
+    (setq org-startup-folded t)
+    (use-package org-bullets
+      :ensure t
+      :config
+      (add-hook 'org-mode-hook (lambda()(org-bullets-mode 1))))
+    (setq org-startup-folded t)
+#+END_SRC
+
+#+begin_src emacs-lisp
+(setq org-src-tab-acts-natively t)
+#+end_src
+
+* js2-mode
+#+BEGIN-SRC emacs-lisp
+(require 'js2-mode)
+(add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
+(add-hook 'js2-mode-hook 'js2-minor-mode)
+(add-hook 'js2-mode-hook 'ac-js2-mode)
+(setq js2-highlight-level 3)
+#+END_SRC  
+
+#+BEGIN-SRC emacs-lisp
+# (require 'js2-refactor)
+# (require 'xref-js2)
+
+# (add-hook 'js2-mode-hook #'js2-refactor-mode)
+# (js2r-add-keybindings-with-prefix "C-c C-r")
+# (define-key js2-mode-map(kbd "C-k") #'js2r-kill)
+
+# (define-key js-mode-map (kbd "M-.") nil)
+
+# (add-hook 'js2-mode-hook (lambda()
+# (add-hook 'xref-backend-functions #'xref-js2-xref-backend nil t)))
+#+END_SRC  
+
+* Company
+#+begin_src emacs-lisp
+  (use-package company
+  :ensure t
+  :init
+  (add-hook 'after-init-hook 'global-company-mode))
+  (setq company-minimum-prefix-length 1)
+  ;; (general-def company-active-map
+  ;; "C-n" 'company-select-next
+  ;; "C-p" 'company-select-previous)
+  ;; (general-def company-search-map
+  ;; "C-n" 'company-select-next
+  ;; "C-p" 'company-select-previous)
+#+end_src
+* Undo-tree
+#+begin_src emacs-lisp
+;; sacha chua
+;;C-x u (undo-tree-visualize)
+(use-package undo-tree
+:diminish undo-tree-mode
+:config
+(progn
+(global-undo-tree-mode)
+(setq undo-tree-visualizer-timestamps t)
+(setq undo-tree-visualizer-diff t)))
+#+end_src
+* Rainbow delimiters  
+#+begin_src emacs-lisp
+;;(use-package rainbow-delimiters :disabled nil)
+(require 'rainbow-delimiters)
+(rainbow-delimiters-mode t)
+(add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
+#+end_src
+* Paren mode
+#+begin_src emacs-lisp
+(setq show-paren-style 'mixed)
+(add-hook 'prog-mode-hook 'show-paren-mode)
+#+end_src
+* Flycheck
+#+begin_src emacs-lisp
+(require 'flycheck)
+(add-hook 'after-init-hook 'global-flycheck-mode)
+(define-fringe-bitmap 'flycheck-fringe-bitmap-ball
+(vector #b00000000
+#b00000000
+#b00000000
+#b00000000
+#b00000000
+#b00111000
+#b01111100
+#b11111110
+#b11111110
+#b01111100
+#b01111000
+#b00000000
+#b00000000
+#b00000000
+#b00000000
+#b00000000))
+(flycheck-define-error-level 'error
+:severity 100
+:compilation-level 2
+:overlay-category 'flycheck-error-overlay
+:fringe-bitmap 'flycheck-fringe-bitmap-ball
+:fringe-face 'flycheck-fringe-error
+:error-list-face 'flycheck-error-list-error)
+#+end_src
+* Typographie
+** Signes doubles
+#+begin_src emacs-lisp
+(defun cca-exclamation()
+  (interactive)
+  (save-excursion
+    (insert " !")))
+
+(defun cca-interrogation()
+  (interactive)
+  (save-excursion
+    (insert " ?")))
+
+(defun cca-deuxpoints()
+  (interactive)
+  (save-excursion
+    (insert " :")))
+
+(defun cca-pointvirgule()
+  (interactive)
+  (save-excursion
+    (insert " ;")))
+
+#+end_src
+** Espaces
+#+begin_src emacs-lisp
+(defun cca-insecable()
+  (interactive)
+  (save-excursion)
+(ucs-insert '#xa0))
+
+(defun cca-fine-secable()
+  (interactive)
+  (save-excursion)
+(ucs-insert '#x2009))
+
+(defun cca-fine-insecable()
+  (interactive)
+  (save-excursion)
+(ucs-insert '#x202f))
+
+(defun cca-tiret-cadratin()
+  (interactive)
+  (save-excursion)
+(ucs-insert '#x2014))
+
+(defun cca-tiret-demi-cadratin()
+  (interactive)
+  (save-excursion)
+(ucs-insert '#x2013))
+#+end_src
+** Autres
+#+begin_src emacs-lisp
+
+(defun cca-ae()
+  (interactive)
+  (save-excursion)
+  (ucs-insert '#x00e6))
+ 
+(defun cca-oe()
+  (interactive)
+  (save-excursion)
+  (ucs-insert '#x0153))
+
+(defun cca-left()
+  (interactive)
+  (save-excursion)
+(ucs-insert '#x201c))
+
+(defun cca-right()
+  (interactive)
+  (save-excursion)
+(ucs-insert '#x201d))
+
+(defun cca-left-single()
+  (interactive)
+  (save-excursion)
+(ucs-insert '#x2018))
+
+(defun cca-right-single()
+  (interactive)
+  (save-excursion)
+(ucs-insert '#x2019))
+
+(defun cca-ampersand()
+  (interactive)
+  (save-excursion)
+(ucs-insert '#x026))
+
+(defun cca-apostrophe()
+  (interactive)
+  (save-excursion)
+(ucs-insert '#x2019))
+
+(defun cca-suspension()
+  (interactive)
+  (save-excursion)
+(ucs-insert '#x2026))
+#+end_src
+
+#+begin_src emacs-lisp
+;supprime les lignes blanches multiples et ne laisse que des singletons de lignes blanches
+(defun single-lines-only ()
+  "replace multiple blank lines with a single one"
+  (interactive)
+  (goto-char (point-min))
+  (while (re-search-forward "\\(^\\s-*$\\)\n" nil t)
+    (replace-match "\n")
+    (forward-char 1)))
+
+#+end_src
+* Typographie : raccourcis
+#+begin_src emacs-lisp
+  (global-set-key (kbd "C-<kp-1>") 'cca-left) ; “
+  (global-set-key (kbd "C-<kp-2>") 'cca-right) ; ”
+  (global-set-key (kbd "C-<kp-4>") 'cca-left-single) ; ‘
+  (global-set-key (kbd "C-<kp-5>") 'cca-right-single) ; ’
+  (global-set-key (kbd "C-<kp-7>") 'cca-guillemet-ouvrant) ; «
+  (global-set-key (kbd "C-<kp-8>") 'cca-guillemet-fermant) ; »
+  (global-set-key (kbd "C-<kp-3>") 'cca-insecable) ;  
+  (global-set-key (kbd "C-<kp-6>") 'cca-tiret-cadratin) ; —
+  (global-set-key (kbd "C-<kp-9>") 'cca-suspension) ; …
+  (global-set-key (kbd "C-<kp-0>") 'cca-parap)
+
+
+  (global-set-key (kbd "M-<kp-1>") 'cca-ae)
+  (global-set-key (kbd "M-<kp-2>") 'cca-oe)
+
+  ;; (global-set-key (kbd "M-<kp-decimal>") 'cca-link)
+  ;; (global-set-key (kbd "M-<kp-0>") 'cca-tdm)
+  ;; (global-set-key (kbd "M-<kp-1>") 'cca-h1)
+  ;; (global-set-key (kbd "M-<kp-2>") 'cca-h2)
+  (global-set-key (kbd "M-<kp-3>") 'cca-h3)
+  (global-set-key (kbd "M-<kp-4>") 'cca-h4)
+  (global-set-key (kbd "M-<kp-5>") 'cca-h5)
+  (global-set-key (kbd "M-<kp-6>") 'cca-h6)
+
+  (global-set-key (kbd "M-<kp-7>") 'cca-sup-sup)
+  (global-set-key (kbd "M-<kp-8>") 'cca-aspan)
+  (global-set-key (kbd "M-<kp-9>") 'cca-gras)
+
+  (global-set-key (kbd "C-!") 'cca-exclamation)
+  (global-set-key (kbd "C-:") 'cca-deuxpoints)
+  (global-set-key (kbd "C-;") 'cca-pointvirgule)
+  ; car clavier azerty donc pas de possibilité de "C-?"
+  (global-set-key (kbd "C-,") 'cca-interrogation)
+
+#+end_src
+* Raccourcis globaux
+  #+BEGIN_SRC emacs-lisp
+(global-set-key (kbd "<f8>") 'ibuffer)
+(global-set-key (kbd "<f6>") 'web-mode)
+(global-set-key (kbd "<f7>") 'less-css-mode)
+;(global-set-key (kbd "<f6>") 'cca-dldt)
+;(global-set-key (kbd "<f7>") 'cca-dldd)
+
+  #+END_SRC
+* Outils
+#+begin_src emacs-lisp
+  (defun incremente(&optional arg)
+    "Incrémenter le nombre sous le curseur"
+    (interactive "*p")
+    (let* ((bounds (bounds-of-thing-at-point 'word))
+	   (beg (car bounds))
+	   (end (cdr bounds))
+	   (num (string-to-number (buffer-substring beg end)))
+	   (incr (cond ((null arg) 1)
+		       ((listp arg) -1)
+		       (t arg)))
+	   (value (+ num incr)))
+      (delete-region beg end)
+      (insert (format "%d" value))))
+#+end_src
+#+begin_src emacs-lisp
+(defun plus()
+  (interactive)
+  (skip-chars-backward "0-9")
+  (or (looking-at "[0-9]+")
+      (error "No number at point."))
+  (replace-match (number-to-string (1+ (string-to-number (match-string 0))))))
+(global-set-key (kbd "M-à") 'plus)
+#+end_src
+#+begin_src emacs-lisp
+(defun moins()
+  (interactive)
+  (skip-chars-backward "0-9")
+  (or (looking-at "[0-9]+")
+      (error "No number at point."))
+  (replace-match (number-to-string (1- (string-to-number (match-string 0))))))
+(global-set-key (kbd "M-é") 'moins)
+#+end_src
+
+
+#+begin_src emacs-lisp
+;supprime les lignes blanches multiples et ne laisse que des singletons de lignes blanches
+(defun single-lines-only ()
+  "replace multiple blank lines with a single one"
+  (interactive)
+  (goto-char (point-min))
+  (while (re-search-forward "\\(^\\s-*$\\)\n" nil t)
+    (replace-match "\n")
+    (forward-char 1)))
+#+end_src
+#+begin_src emacs-lisp
+; imprime les lettres de A à Z
+(defun a-to-z()
+  (interactive)
+  (let ((i 64))
+    (while (< i 90)
+      (setq i (+ i 1))
+      (insert (format "%c " i))))
+)
+#+end_src
+* Folding
+** À la vim
+#+begin_src emacs-lisp
+  (add-hook 'prog-mode-hook #'hs-minor-mode)
+  (global-set-key (kbd "M-ç") 'hs-toggle-hiding)
+#+end_src
+* Agressive-indent
+#+begin_src emacs-lisp
+(add-hook 'prog-mode-hook #'aggressive-indent-mode)
+#+end_src
+* Emmet
+#+BEGIN_SRC emacs-lisp
+(use-package emmet-mode
+:ensure t)
+#+end_src
