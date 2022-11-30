@@ -26,7 +26,7 @@
       (setq scroll-conservatively 100)
 
 #+END_SRC
-** Recharge configuration
+* Recharge configuration
 #+begin_src emacs-lisp
   (defun rechargeConfiguration()
     (interactive)
@@ -50,7 +50,7 @@
   (setq auto-save-file-name-transforms 
 	`((".*", temporary-file-directory t)))
 #+end_src
-** Windmove : mouvement fenêtre
+* Windmove : mouvement fenêtre
 #+begin_src emacs-lisp
   ;;changement de fenêtre au moyen de SHIFT + flêche
   (when (fboundp 'windmove-default-keybindings)
@@ -61,11 +61,10 @@
   (add-to-list 'default-frame-alist
   '(font . "Fira Code Retina 12")))
 #+end_src
-** Titre fenêtre
+* Titre fenêtre
 #+begin_src emacs-lisp
 ; Affiche la localisation du fichier en cours d'édition comme titre de la fenêtre.
 (setq frame-title-format '("" (buffer-file-name "%f" (dired-directory dired-directory "%b"))))
-
 #+end_src
 * Themes
 #+BEGIN_SRC emacs-lisp
@@ -200,6 +199,270 @@
 :fringe-face 'flycheck-fringe-error
 :error-list-face 'flycheck-error-list-error)
 #+end_src
+* Mise en page html : paragraphes + entêtes
+
+  #+BEGIN_SRC emacs-lisp
+(defun cca-parap(d1 d2)
+  (interactive"r")
+  (save-excursion
+    (goto-char d2)(insert "</p>")
+    (goto-char d1)(insert "<p>")))
+
+(defun cca-h1(d1 d2)
+  (interactive "r")
+  (save-excursion
+    (goto-char d2)(insert "</h1>")
+    (goto-char d1)(insert "<h1>")
+))
+
+(defun cca-h2(d1 d2)
+  (interactive "r")
+  (save-excursion
+    (goto-char d2)(insert "</h2>")
+    (goto-char d1)(insert "<h2>")
+))
+
+(defun cca-h3(d1 d2)
+  (interactive "r")
+  (save-excursion
+    (goto-char d2)(insert "</h3>")
+    (goto-char d1)(insert "<h3>")
+))
+
+(defun cca-h4(d1 d2)
+  (interactive "r")
+  (save-excursion
+    (goto-char d2)(insert "</h4>")
+    (goto-char d1)(insert "<h4>")
+))
+
+
+(defun cca-h5(d1 d2)
+  (interactive "r")
+  (save-excursion
+    (goto-char d2)(insert "</h5>")
+    (goto-char d1)(insert "<h5>")
+))
+
+
+(defun cca-h6(d1 d2)
+  (interactive "r")
+  (save-excursion
+    (goto-char d2)(insert "</h6>")
+    (goto-char d1)(insert "<h6>")
+))
+
+
+  #+END_SRC
+* Mise en page html : tableaux + listes
+  #+BEGIN_SRC emacs-lisp
+; Tableaux
+
+(defun cca-trth(debut fin)
+  "A partir d'une région sélectionnée, place <tr><th>au début et </th></tr> à la fin"
+  (interactive "r")
+  (save-excursion
+    (goto-char fin)(insert "</th></tr>")
+    (goto-char debut)(insert "<tr><th colspan=\"\" class=\"titre\">")
+))
+
+
+(defun cca-trtd(debut fin)
+  "A partir d'une région sélectionnée, place <tr><td>au début et </td></tr> à la fin"
+  (interactive "r")
+  (save-excursion
+    (goto-char fin)(insert "</td></tr>")
+    (goto-char debut)(insert "<tr><td colspan=\"\" class=\"titre\">")
+))
+
+
+(defun cca-tr(debut fin)
+  "A partir d'une région sélectionnée, place <tr>au début et </tr> à la fin"
+  (interactive "r")
+  (save-excursion
+    (goto-char fin)(insert "</tr>")
+    (goto-char debut)(insert "<tr>")
+))
+
+(defun cca-td(debut fin)
+  "A partir d'une région sélectionnée, place <td>au début et </td> à la fin"
+  (interactive "r")
+  (save-excursion
+    (goto-char fin)(insert "</td>")
+    (goto-char debut)(insert "<td>")
+))
+
+
+;definition list
+
+(defun cca-dl(deb fin)
+  (interactive "r")
+  (save-excursion
+    (goto-char fin)(insert "</dl>\n")
+    (goto-char deb)(insert "<dl class=\"\">\n")
+))
+
+(defun cca-dt(deb fin)
+  (interactive "r")
+  (save-excursion
+    (goto-char fin)(insert "</dt>")
+    (goto-char deb)(insert "<dt>")
+))
+
+(defun cca-dd(deb fin)
+  (interactive "r")
+  (save-excursion
+    (goto-char fin)(insert "</dd>")
+    (goto-char deb)(insert "<dd>")
+))
+
+
+  #+END_SRC
+* Mise en page html : typographie : signes doubles
+  #+BEGIN_SRC emacs-lisp
+(defun cca-exclamation()
+  (interactive)
+  (save-excursion
+    (insert " !")))
+
+(defun cca-interrogation()
+  (interactive)
+  (save-excursion
+    (insert " ?")))
+
+(defun cca-deuxpoints()
+  (interactive)
+  (save-excursion
+    (insert " :")))
+
+(defun cca-pointvirgule()
+  (interactive)
+  (save-excursion
+    (insert " ;")))
+
+
+  #+END_SRC
+* Mise en page html : typographie : espaces  + guillemets
+
+  #+BEGIN_SRC emacs-lisp
+(defun cca-insecable()
+  (interactive)
+  (save-excursion)
+(ucs-insert '#xa0))
+
+(defun cca-fine-secable()
+  (interactive)
+  (save-excursion)
+(ucs-insert '#x2009))
+
+(defun cca-fine-insecable()
+  (interactive)
+  (save-excursion)
+(ucs-insert '#x202f))
+
+
+(defun cca-tiret-cadratin()
+  (interactive)
+  (save-excursion)
+(ucs-insert '#x2014))
+
+(defun cca-tiret-demi-cadratin()
+  (interactive)
+  (save-excursion)
+(ucs-insert '#x2013))
+
+
+
+  #+END_SRC
+* Mise en page html : typographie : autres signes
+  #+BEGIN_SRC emacs-lisp
+
+(defun cca-left()
+  (interactive)
+  (save-excursion)
+(ucs-insert '#x201c))
+
+(defun cca-right()
+  (interactive)
+  (save-excursion)
+(ucs-insert '#x201d))
+
+(defun cca-left-single()
+  (interactive)
+  (save-excursion)
+(ucs-insert '#x2018))
+
+(defun cca-right-single()
+  (interactive)
+  (save-excursion)
+(ucs-insert '#x2019))
+
+(defun cca-ampersand()
+  (interactive)
+  (save-excursion)
+(ucs-insert '#x026))
+
+(defun cca-apostrophe()
+  (interactive)
+  (save-excursion)
+(ucs-insert '#x2019))
+
+(defun cca-suspension()
+  (interactive)
+  (save-excursion)
+(ucs-insert '#x2026))
+
+  #+END_SRC
+* Mise en page html : autres
+  #+BEGIN_SRC emacs-lisp
+(defun cca-emem(d1 d2)
+  (interactive "r")
+  (save-excursion
+    (goto-char d2)(insert "</em>")
+    (goto-char d1)(insert "<em>")
+))
+
+(defun cca-sup-sup(deb fin)
+  "A partir d'une région sélectionnée, place <sup>au début et </sup> à la fin"
+  (interactive "r")
+  (save-excursion
+    (goto-char fin)(insert "</sup>")
+    (goto-char deb)(insert "<sup>")
+))
+
+
+(defun cca-aspan(deb fin)
+  (interactive "r")
+  (save-excursion
+    (goto-char fin)(insert "</span>")
+    (goto-char deb)(insert "<span class=\"\">")
+))
+
+(defun cca-link(d1 d2)
+  (interactive "r")
+  (save-excursion
+    (goto-char d2)(insert "</a>")
+    (goto-char d1)(insert "<a href=\"\">")
+))
+
+; Notes nda 
+
+(defun cca-cfa(d1 d2)
+(interactive "r")
+(save-excursion
+(goto-char d2)(insert "</cfa>")
+(goto-char d1)(insert "<cfa>")))
+
+(defun cca-nda(d1 d2)
+(interactive "r")
+(save-excursion
+(goto-char d2)(insert "</nda>")
+(goto-char d1)(insert "<nda>")))
+
+
+  #+END_SRC
+* Mise en page html : misc
+
 * Typographie
 ** Signes doubles
 #+begin_src emacs-lisp
